@@ -13,13 +13,18 @@ load_dotenv()
 chat = ChatOpenAI()
 
 memory = ConversationBufferMemory(
-    memory_key="messages",
+    memory_key="conversation_messages",
     return_messages=True,  # Return messages with Human/AI object context (rather than just a regular string)
 )
 
 prompt = ChatPromptTemplate(
-    input_variables=["content"],
-    messages=[HumanMessagePromptTemplate.from_template("{content}")],
+    input_variables=["content", "conversation_messages"],
+    messages=[
+        MessagesPlaceholder(
+            variable_name="conversation_messages"
+        ),  # Specifically look for the conversation_messages memory_key defined above in the memory
+        HumanMessagePromptTemplate.from_template("{content}"),
+    ],
 )
 
 chain = LLMChain(llm=chat, prompt=prompt, memory=memory)
