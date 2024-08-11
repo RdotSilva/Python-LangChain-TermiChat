@@ -14,7 +14,7 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-chat = ChatOpenAI()
+chat = ChatOpenAI(verbose=True)
 
 memory = ConversationSummaryMemory(
     # chat_memory=FileChatMessageHistory("chat_history.json"), # Temporarily commenting out as this doesn't play well with ConversationSummaryMemory
@@ -33,7 +33,12 @@ prompt = ChatPromptTemplate(
     ],
 )
 
-chain = LLMChain(llm=chat, prompt=prompt, memory=memory)
+chain = LLMChain(
+    llm=chat,
+    prompt=prompt,
+    memory=memory,
+    verbose=True,
+)
 
 while True:
     content = input(">> ")
